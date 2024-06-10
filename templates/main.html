@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @vite('resources/css/app.css')
+</head>
+
+<body class="bg-pink-main">
+    <nav class="bg-white-main p-2">
+        <div class=" flex justify-between items-center w-full">
+            <div class="bg-black">
+                <div class="bg-pink-main p-1 flex justify-center rounded-md ">
+                    <img src="{{ url_for('static' , filename = 'assets/image/logo-vector.png') }}" alt="Logo KOMDIS" class="h-8 mr-2 justify-center">
+                    <a href="#" class="text-black-main font-bold text-xl p-1">
+                        K O M D I S
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="flex justify-around mt-40">
+        <div>
+            <h1 class="text-[40px] font-bold mb-16">
+                COMPRES IMAGE MEDIS <br>
+                USING AI
+            </h1>
+            <p class="text-xl h-40">
+                Membantu untuk memperkecil ukuran gambar <br>
+                medis serta mengembalikan ukuran file gambar <br>
+                yang sudah di perkecil menyerupai gambar aslinya.
+            </p>
+
+            <label class="block mb-2 text-xl text-gray-900 border-pink-main" for="file_input"></label>
+            <form class="image-input">
+                <input type="file" id="img-source" class="block w-[400px] text-sm text-slate-500 bg-white-main rounded-lg shadow-xl
+        file:mr-4 file:py-2 file:px-4 file:rounded-lg
+        file:border-0 file:text-sm file:font-semibold
+        file:bg-pink-main file:text-black-main mb-3
+        hover:file:bg-pink-100" />
+                <p class="mt-1 text-sm text-black-500 mb-10 ml-3" id="file_input">SVG, PNG, JPG or GIF.</p>
+                <button type="submit" class="text-black-main bg-white-main shadow-lg focus:ring-4 focus:ring-white-main font-medium rounded-lg text-sm-bold px-44 py-1 me-2 mb-2  hover:bg-white-main focus:outline-none">COMPRESS
+                    GAMBAR</button>
+            </form>
+        </div>
+        <div>
+            <img src="{{ url_for('static' , filename = 'assets/image/logo-vector.png') }}" class="h-[550px] w-[550px]">
+        </div>
+    </div>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const msgerForm = document.querySelector(".image-input");
+            const imgInput = document.getElementById("img-source");
+
+            msgerForm.addEventListener("submit", event => {
+                event.preventDefault();
+                loadImage();
+            });
+
+            function loadImage() {
+                const img = document.getElementById('img-source');
+                const file = img.files[0];
+
+                if (!file) {
+                    alert("Pilih Gambar Terlebih Dahulu!");
+                    return;
+                }
+
+                const fromData = new FormData();
+                fromData.append('image', file);
+
+                try {
+                    const response = fetch('/upload', { method: 'POST', body: fromData })
+                }
+                catch (error) {
+                    console.error('Error:', error);
+                    alert("Terjadi kesalahan saat mengunggah gambar.");
+                }
+            }
+        });
+
+
+    </script>
+
+</body>
+
+</html>
