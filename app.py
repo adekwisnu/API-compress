@@ -39,6 +39,7 @@ def upload():
     buffered_original = BytesIO()
     img_original.save(buffered_original, format="JPEG")
     base64_original = base64.b64encode(buffered_original.getvalue()).decode('utf-8')
+    size_original = len(buffered_original.getvalue())
 
     buffered_encode = BytesIO()
     rescaled_image = (np.maximum(res_encode,0)/res_encode.max()) * 255
@@ -48,6 +49,7 @@ def upload():
 
     img_encode.save(buffered_encode, format="JPEG")
     base64_encode = base64.b64encode(buffered_encode.getvalue()).decode('utf-8')
+    size_encode = len(buffered_encode.getvalue())
 
     buffered_decode = BytesIO()
     rescaled_image = (np.maximum(res_decode,0)/res_decode.max()) * 255
@@ -57,7 +59,8 @@ def upload():
 
     img_decode.save(buffered_decode, format="JPEG")
     base64_decode = base64.b64encode(buffered_decode.getvalue()).decode('utf-8')
-    
+    size_decode = len(buffered_decode.getvalue())
+
     return jsonify({
         "message": "Gambar berhasil diunggah", 
         "images": [
@@ -65,19 +68,19 @@ def upload():
             "type": "original",
             "file": 'data:image/png;base64,' + base64_original,
             "name": file.filename,
-            "size": '',
+            "size": size_original,
             "pixel": np.asarray(img_original).shape,
         },
         {
             "type": "encode",
             "file": 'data:image/png;base64,' + base64_encode,
-            "size": '',
+            "size": size_encode,
             "pixel": '',
         },
         {
             "type": "decode",
             "file": 'data:image/png;base64,' + base64_decode,
-            "size": '',
+            "size": size_decode,
             "pixel": '',
         }
     ]
